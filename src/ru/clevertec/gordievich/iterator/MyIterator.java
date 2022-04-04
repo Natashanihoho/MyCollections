@@ -1,5 +1,6 @@
 package ru.clevertec.gordievich.iterator;
 
+
 public interface MyIterator<T> {
 
     boolean hasNext();

@@ -1,6 +1,8 @@
 package ru.clevertec.gordievich.iterator;
 
-public class MyIteratorImpl <T> implements MyIterator<T> {
+import ru.clevertec.gordievich.list.MyList;
+
+public class MyIteratorImpl<T> implements MyIterator {
 
     private int marker;
 

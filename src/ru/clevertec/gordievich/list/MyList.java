@@ -30,4 +30,6 @@ public interface MyList<T> {
     MyIterator<T> getIterator();
 
     int size();
+
+    boolean isEmpty();
 }

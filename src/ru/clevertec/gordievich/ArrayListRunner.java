@@ -1,9 +1,10 @@
 package ru.clevertec.gordievich;
 
 import ru.clevertec.gordievich.list.MyArrayList;
+import ru.clevertec.gordievich.list.MyLinkedList;
 import ru.clevertec.gordievich.list.MyList;
 
-public class Main {
+public class ArrayListRunner {
 
     public static void main(String[] args) {
         MyArrayList<Integer> myArrayList = new MyArrayList<>();
@@ -54,5 +55,7 @@ public class Main {
         for (int i = 0; i < myArrayList.size(); i++) {
             System.out.print(myArrayList.get(i) + " ");
         }
+
+
     }
 }

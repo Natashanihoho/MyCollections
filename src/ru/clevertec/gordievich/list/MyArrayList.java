@@ -22,7 +22,7 @@ public class MyArrayList<T> implements MyList<T> {
 
     @Override
     public void add(T item){
-        if(size + 1 > maxSize) throw new IndexOutOfBoundsException();
+        if(size + 1 > maxSize && maxSize != 0) throw new IndexOutOfBoundsException();
         if(size == array.length - 1){
             array = extendArray();
         }
@@ -31,7 +31,8 @@ public class MyArrayList<T> implements MyList<T> {
 
     @Override
     public void add(T item, int index) {
-        if(size + 1 > maxSize || index >= size) throw new IndexOutOfBoundsException();
+        if(size + 1 > maxSize && maxSize != 0) throw new IndexOutOfBoundsException();
+        if(index >= size) throw new IndexOutOfBoundsException();
 
         T[] temp = (T[]) Arrays.copyOfRange(array, index, size);
         size = size + 1;
@@ -79,9 +80,8 @@ public class MyArrayList<T> implements MyList<T> {
 
     @Override
     public void addAll(MyList<? extends T> list) {
-
         T[] temp = (T[])list.toArray();
-        if(size + temp.length > maxSize) throw new IndexOutOfBoundsException();
+        if(size + temp.length > maxSize && maxSize != 0) throw new IndexOutOfBoundsException();
         if(size + temp.length > array.length) {
             array = extendArray();
         }
@@ -130,6 +130,11 @@ public class MyArrayList<T> implements MyList<T> {
     @Override
     public int size(){
         return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     private void testMethod(){
