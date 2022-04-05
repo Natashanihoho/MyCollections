@@ -1,8 +1,12 @@
 package ru.clevertec.gordievich;
 
+import ru.clevertec.gordievich.iterator.MyIterator;
 import ru.clevertec.gordievich.list.MyArrayList;
 import ru.clevertec.gordievich.list.MyLinkedList;
 import ru.clevertec.gordievich.list.MyList;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ArrayListRunner {
 
@@ -56,6 +60,18 @@ public class ArrayListRunner {
             System.out.print(myArrayList.get(i) + " ");
         }
 
+        MyIterator<Integer> myIterator = myArrayList.getIterator();
+        while(myIterator.hasNext()){
+            int element = myIterator.next();
+            if(element == 5) myIterator.addAfter(50);
+            else if(element == 8) myIterator.addBefore(18);
+            else if(element == 13) myIterator.remove();
+        }
+
+        System.out.println("List after iterator: ");
+        for (int i = 0; i < myArrayList.size(); i++) {
+            System.out.print(myArrayList.get(i) + " ");
+        }
 
     }
 }

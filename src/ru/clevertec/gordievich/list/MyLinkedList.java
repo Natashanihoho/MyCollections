@@ -2,12 +2,11 @@ package ru.clevertec.gordievich.list;
 
 import ru.clevertec.gordievich.iterator.MyIterator;
 
-import java.util.LinkedList;
-
 public class MyLinkedList <T> implements MyList<T> {
     private Node<T> first;
     private Node<T> last;
     private int size;
+    private int maxSize = 0;
 
     private static class Node<T> {
         private Node<T> prev;
@@ -21,6 +20,8 @@ public class MyLinkedList <T> implements MyList<T> {
 
     @Override
     public void add(T item) {
+        if(maxSize != 0 && size + 1 > maxSize) throw new IndexOutOfBoundsException("Adding error: the size exceeds the maximum allowable value");
+
         Node node = new Node(item);
         if(first == null) {
             node.prev = null;
@@ -36,25 +37,44 @@ public class MyLinkedList <T> implements MyList<T> {
 
     @Override
     public void add(T item, int index) {
-        if(index > size || index < 0) throw new IndexOutOfBoundsException();
-        Node node = new Node(item);
-        Node nextNode = first;
-        if(first == null || index == size) {
+        if(maxSize != 0 && size + 1 > maxSize) {
+            System.out.println("size: " + size);
+            System.out.println("maxSize: " + maxSize);
+            throw new IndexOutOfBoundsException("Adding by index error: the size exceeds the maximum allowable value");
+        }
+        if(index > size || index < 0) throw new IndexOutOfBoundsException("Adding by index error: index > size || index < 0");
+
+        if(index == 0 && index != size){
+            Node node = new Node(item);
+            Node nextNode = first;
+            nextNode.prev = node;
+            node.next = nextNode;
+            first = node;
+            size++;
+        }
+        else if(index == size) {
             add(item);
         } else {
+            Node node = new Node(item);
+            Node nextNode = first;
+            Node prevNode;
             for (int i = 0; i < index; i++) {
                 nextNode = nextNode.next;
             }
-            node.prev = nextNode.prev;
+            prevNode = nextNode.prev;
+
+            node.prev = prevNode;
             node.next = nextNode;
-            nextNode.prev.next = node;
+            prevNode.next = node;
             nextNode.prev = node;
+            size++;
         }
-        size++;
+
     }
 
     @Override
     public void addAll(MyList<? extends T> list) {
+        if(maxSize != 0 && size + list.size() > maxSize) throw new IndexOutOfBoundsException("Adding of collection error: the size exceeds the maximum allowable value");
         for (int i = 0; i < list.size(); i++) {
             add(list.get(i));
         }
@@ -63,7 +83,7 @@ public class MyLinkedList <T> implements MyList<T> {
     @Override
     public T get(int index) {
         Node node = first;
-        if(index >= size || index < 0) throw new IndexOutOfBoundsException();
+        if(index >= size || index < 0) throw new IndexOutOfBoundsException("Getting error: index >= size || index < 0");
         for (int i = 0; i < index; i++) {
             node = node.next;
         }
@@ -72,28 +92,34 @@ public class MyLinkedList <T> implements MyList<T> {
 
     @Override
     public T remove(int index) {
-        if(index > size || index < 0) throw new IndexOutOfBoundsException();
+        if(index >= size || index < 0) throw new IndexOutOfBoundsException("Removing error: index >= size || index < 0");
+
         Node removedNode = first;
         for (int i = 0; i < index; i++) {
             removedNode = removedNode.next;
         }
         Node prevNode = removedNode.prev;
         Node nextNode = removedNode.next;
-        if(nextNode == null) {
-            prevNode.next = null;
-        }
-        else if(size != 1) {
+        if(index == 0 || index == size - 1) {
+            if(prevNode == null){
+                first = nextNode;
+                if(nextNode != null) nextNode.prev = null;
+            }
+            if(nextNode == null) {
+                last = prevNode;
+                if(prevNode != null) prevNode.next = null;
+            }
+        } else {
             prevNode.next = nextNode;
             nextNode.prev = prevNode;
         }
-
         size--;
         return (T)removedNode.item;
     }
 
     @Override
     public void set(T item, int index) {
-        if(index > size || index < 0) throw new IndexOutOfBoundsException();
+        if(index > size || index < 0) throw new IndexOutOfBoundsException("Setting error: index >= size || index < 0");
         Node node = first;
         for (int i = 0; i < index; i++) {
             node = node.next;
@@ -103,24 +129,40 @@ public class MyLinkedList <T> implements MyList<T> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < size - 1; i++) {
-            remove(i);
+        if(!isEmpty()) {
+            for (int i = 0; i < size - 1; i++) {
+                remove(i);
+            }
+            size = 0;
         }
     }
 
     @Override
     public void setMaxSize(int maxSize) {
-
+        this.maxSize = maxSize;
+        while (size > maxSize) {
+            remove(size - 1);
+            size--;
+        }
     }
 
     @Override
     public int find(T item) {
-        return 0;
+        if (!isEmpty()) {
+            for (int index = 0; index < size; index++) {
+                if(get(index) == item) return index;
+            }
+        }
+        return -1;
     }
 
     @Override
     public T[] toArray() {
-        return null;
+        Object[] array = new Object[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = this.get(i);
+        }
+        return (T[])array;
     }
 
     @Override
@@ -130,7 +172,7 @@ public class MyLinkedList <T> implements MyList<T> {
 
     @Override
     public MyIterator<T> getIterator() {
-        return null;
+        return new MyIteratorImpl();
     }
 
     @Override
@@ -141,5 +183,38 @@ public class MyLinkedList <T> implements MyList<T> {
     @Override
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    private class MyIteratorImpl implements MyIterator<T> {
+
+        private int pointer = 0;
+
+        @Override
+        public boolean hasNext() {
+            return pointer < size;
+        }
+
+        @Override
+        public T next() {
+            return get(pointer++);
+        }
+
+        @Override
+        public void remove() {
+            MyLinkedList.this.remove(pointer - 1);
+            pointer--;
+        }
+
+        @Override
+        public void addBefore(T item) {
+            add(item, pointer-1);
+            pointer++;
+        }
+
+        @Override
+        public void addAfter(T item) {
+            add(item, pointer);
+            pointer++;
+        }
     }
 }

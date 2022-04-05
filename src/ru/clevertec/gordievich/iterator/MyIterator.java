@@ -9,8 +9,8 @@ public interface MyIterator<T> {
 
     void remove();
 
-    void addBefore();
+    void addBefore(T item);
 
-    void addAfter();
+    void addAfter(T item);
 
 }

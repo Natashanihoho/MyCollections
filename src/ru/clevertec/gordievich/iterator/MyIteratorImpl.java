@@ -1,7 +1,5 @@
 package ru.clevertec.gordievich.iterator;
 
-import ru.clevertec.gordievich.list.MyList;
-
 public class MyIteratorImpl<T> implements MyIterator {
 
     private int marker;
@@ -26,12 +24,12 @@ public class MyIteratorImpl<T> implements MyIterator {
     }
 
     @Override
-    public void addBefore() {
+    public void addBefore(Object item) {
 
     }
 
     @Override
-    public void addAfter() {
+    public void addAfter(Object item) {
 
     }
 }

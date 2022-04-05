@@ -1,8 +1,13 @@
 package ru.clevertec.gordievich;
 
+import ru.clevertec.gordievich.iterator.MyIterator;
 import ru.clevertec.gordievich.list.MyArrayList;
 import ru.clevertec.gordievich.list.MyLinkedList;
 import ru.clevertec.gordievich.list.MyList;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class LinkedListRunner {
     public static void main(String[] args) {
@@ -49,9 +54,36 @@ public class LinkedListRunner {
         System.out.println();
 
 //        myLinkedList.clear();
+//        System.out.println("After cleaning: ");
 //        for (int i = 0; i < myLinkedList.size(); i++) {
-//            System.out.print("After cleaning: " + myLinkedList.get(i) + " ");
+//            System.out.print(myLinkedList.get(i) + " ");
 //        }
 //        System.out.println();
+
+        myLinkedList.setMaxSize(20);
+
+        for (int i = 0; i < myLinkedList.size(); i++) {
+            System.out.print(myLinkedList.get(i) + " ");
+        }
+        System.out.println();
+
+        System.out.println("Found element index: " + myLinkedList.find(2));
+
+        MyIterator<Integer> myIterator = myLinkedList.getIterator();
+        while (myIterator.hasNext()) {
+            int element = myIterator.next();
+            if(element == 1) myIterator.addBefore(0);
+            else if(element == 2) myIterator.addAfter(3);
+        }
+
+        for (int i = 0; i < myLinkedList.size(); i++) {
+            System.out.print(myLinkedList.get(i) + " ");
+        }
+        System.out.println();
+
+//        while(myIterator.hasNext()) {
+//            System.out.println("element: " + myIterator.next());
+//        }
+
     }
 }

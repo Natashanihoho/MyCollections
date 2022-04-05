@@ -3,9 +3,7 @@ package ru.clevertec.gordievich.list;
 import ru.clevertec.gordievich.iterator.MyIterator;
 import ru.clevertec.gordievich.iterator.MyIteratorImpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 public class MyArrayList<T> implements MyList<T> {
 
@@ -94,7 +92,7 @@ public class MyArrayList<T> implements MyList<T> {
     @Override
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
-        while(maxSize < size) {
+        while(size > maxSize) {
             remove(size - 1);
             size--;
         }
@@ -116,10 +114,8 @@ public class MyArrayList<T> implements MyList<T> {
 
     @Override
     public void trim() {
-        System.out.println("Size before trim: " + array.length);
         Object[] temp = (T[])Arrays.copyOf(array, size);
         array = temp;
-        System.out.println("Size after trim: " + array.length);
     }
 
     @Override
@@ -137,11 +133,37 @@ public class MyArrayList<T> implements MyList<T> {
         return size == 0;
     }
 
-    private void testMethod(){
-        ArrayList<Integer> list = new ArrayList<>();
-        list.trimToSize();
+    private class MyIteratorImpl implements MyIterator<T> {
 
-        Iterator<Integer> iterator = list.iterator();
+        private int pointer = 0;
+
+        @Override
+        public boolean hasNext() {
+            return pointer < size;
+        }
+
+        @Override
+        public T next() {
+            return get(pointer++);
+        }
+
+        @Override
+        public void remove() {
+            MyArrayList.this.remove(pointer - 1);
+            pointer--;
+        }
+
+        @Override
+        public void addBefore(T item) {
+            add(item, pointer-1);
+            pointer++;
+        }
+
+        @Override
+        public void addAfter(T item) {
+            add(item, pointer);
+            pointer++;
+        }
     }
 
 }
