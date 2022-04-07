@@ -1,12 +1,11 @@
 package ru.clevertec.gordievich;
 
-import ru.clevertec.gordievich.iterator.MyIterator;
-import ru.clevertec.gordievich.list.MyArrayList;
-import ru.clevertec.gordievich.list.MyLinkedList;
+import ru.clevertec.gordievich.list.MyIterator;
+import ru.clevertec.gordievich.list.impl.MyArrayList;
 import ru.clevertec.gordievich.list.MyList;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 
 public class ArrayListRunner {
 
@@ -72,6 +71,7 @@ public class ArrayListRunner {
         for (int i = 0; i < myArrayList.size(); i++) {
             System.out.print(myArrayList.get(i) + " ");
         }
+
 
     }
 }

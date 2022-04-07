@@ -1,33 +1,31 @@
 package ru.clevertec.gordievich.list;
 
-import ru.clevertec.gordievich.iterator.MyIterator;
 
+public interface MyList<E> {
 
-public interface MyList<T> {
+    void add(E item);
 
-    void add(T item);
+    void add(E item, int index);
 
-    void add(T item, int index);
+    void addAll(MyList<? extends E> list);
 
-    void addAll(MyList<? extends T> list);
+    E get(int index);
 
-    T get(int index);
+    E remove(int index);
 
-    T remove(int index);
-
-    void set(T item, int index);
+    void set(E item, int index);
 
     void clear();
 
     void setMaxSize(int maxSize);
 
-    int find(T item);
+    int find(E item);
 
-    T[] toArray();
+    E[] toArray();
 
     void trim();
 
-    MyIterator<T> getIterator();
+    MyIterator<E> getIterator();
 
     int size();
 

@@ -1,13 +1,9 @@
 package ru.clevertec.gordievich;
 
-import ru.clevertec.gordievich.iterator.MyIterator;
-import ru.clevertec.gordievich.list.MyArrayList;
-import ru.clevertec.gordievich.list.MyLinkedList;
+import ru.clevertec.gordievich.list.MyIterator;
+import ru.clevertec.gordievich.list.impl.MyArrayList;
+import ru.clevertec.gordievich.list.impl.MyLinkedList;
 import ru.clevertec.gordievich.list.MyList;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class LinkedListRunner {
     public static void main(String[] args) {

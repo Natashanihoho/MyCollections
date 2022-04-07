@@ -1,4 +1,4 @@
-package ru.clevertec.gordievich.iterator;
+package ru.clevertec.gordievich.list;
 
 
 public interface MyIterator<T> {
